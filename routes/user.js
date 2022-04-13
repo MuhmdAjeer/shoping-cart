@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login',(req,res)=>{  
-  if(req.session.loggedIn){
+  if(req.session.logged){
     res.render('/')
   }else{
     res.render('users/login',{logginErr : req.session.logginErr})
@@ -42,7 +42,7 @@ router.post('/login',(req,res)=>{
   userHelpers.doLogin(req.body).then((response)=>{
     if(response.status){
 
-      req.session.loggedIn = true
+      req.session.logged = true
       req.session.user=response.user      
       res.redirect('/')
     }else{
@@ -62,5 +62,6 @@ router.get('/cart',verifyLogin,(req,res)=>{
   res.render('users/cart')
  
 })
+
 
 module.exports = router;
