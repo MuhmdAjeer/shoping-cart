@@ -5,7 +5,7 @@ var productHelpers = require('../helpers/product-helpers')
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   productHelpers.getAllProducts().then((products)=>{
-    console.log(products)
+    // console.log(products)
     res.render('admin/admin-products',{products,admin : true })
   })
   
@@ -32,6 +32,13 @@ router.post('/add-product',(req,res)=>{
     })
 
     
+  })
+})
+
+router.get('/delete-product',(req,res)=>{
+  let proId = req.query.id
+  productHelpers.deleteProduct(proId).then((response)=>{
+    res.redirect('/admin')
   })
 })
 

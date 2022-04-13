@@ -1,7 +1,7 @@
 const async = require('hbs/lib/async');
 var db=require('../config/connection');
 const collections = require('../config/collections');
-var collection=require('../config/collections');
+var objectId = require('mongodb').ObjectId
 
 
 module.exports={
@@ -21,6 +21,14 @@ module.exports={
             resolve(products)
         })
         
+    },
+    deleteProduct:(proId)=>{
+        return new Promise ((resolve,reject)=>{
+             db.get().collection(collections.PRODUCT_COLLECTION).deleteOne({_id:objectId(proId)}).then((response)=>{
+                console.log('deleted');
+                resolve()
+            })
+        })
     }
 
 }

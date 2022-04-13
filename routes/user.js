@@ -57,9 +57,10 @@ router.get('/logout',(req,res)=>{
   res.redirect('/')
 })
 
+//Checking if loginned in by using a middleware 
 router.get('/cart',verifyLogin,(req,res)=>{
   res.render('users/cart')
- console.log('hi');
+ 
 })
 
 module.exports = router;
