@@ -50,8 +50,18 @@ router.get('/edit-products',async(req,res)=>{
 
 router.post('/edit-product/:id',(req,res)=>{
   
+  
   productHelpers.updateProduct(req.params.id,req.body).then(()=>{
+    let id = req.params.id
     res.redirect('/admin')
+
+    if(req.files.Image){
+      
+      let image = req.files.Image;
+      
+      image.mv('../SHOPPING CART/public/product-images/'+id+'.png')
+      
+    }
   })
 
 })
