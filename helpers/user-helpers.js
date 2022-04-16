@@ -2,6 +2,8 @@ const async = require('hbs/lib/async');
 var db=require('../config/connection');
 const collections = require('../config/collections');
 var collection=require('../config/collections');
+const { ObjectId } = require('mongodb');
+var objectId = require('mongodb').ObjectId
 
 
 module.exports={
@@ -51,6 +53,32 @@ module.exports={
         }else{
             res.redirect('/login')
         }
+    },
+    addToCart:(proId,userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            
+            user = await db.get().collection(collections.CART_COLLECTION).findOne({user:objectId(userId)})
+
+            if(user){
+                db.get().collection(collections.CART_COLLECTION)
+                .updateOne({user:objectId(userId)},
+                    {
+                        $push:{products:objectId(proId)}
+                    }
+                ).then(()=>{
+                    resolve()
+                })
+
+            }else{
+                let cartObj = {
+                    user : objectId(userId),
+                    products : [objectId(proId)]
+                }
+                db.get().collection(collections.CART_COLLECTION).insertOne(cartObj).then((response)=>{
+                    resolve(response)
+                })
+            }
+        })
     }
 
 }
