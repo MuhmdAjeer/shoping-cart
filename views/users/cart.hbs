@@ -1,1 +1,45 @@
-<h1 class="text-center">Cart is Empty</h1>
+<div mt-4>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Product.</th>
+      <th scope="col">Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Options</th>
+      
+
+    </tr>
+  </thead>
+</div>
+
+<tbody>
+{{#each products}}
+    <tr >
+        <td class="pt-2"><img   style="width: 60px; height: 60px; object-fit: contain;" src="/product-images/{{this._id}}.png" alt=""></td>
+        <td class="pt-2">{{this.Name}}</td>
+        <td class="pt-2"><button class="cart-item-count mr-3">-</button>1 <button class="cart-item-count-l mr-3" > + </button> </td>
+        <td > <button class="btn btn-primary">Remove</button>  </td>
+    </tr>
+
+
+
+
+{{/each}}
+</tbody>
+<table>
+
+    <style>
+        .cart-item-count{
+            border-style: none;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .cart-item-count-l{
+            border-style: none;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+        }
+    </style>

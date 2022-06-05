@@ -9,10 +9,16 @@ let verifyLogin = userHelpers.verifyLogin
 router.get('/', function(req, res, next) {
 
   let user = req.session.user;
-  
  
+  let cartCount = null
+
+  if (req.session.user){
+  
+  cartCount = userHelpers.getCartCount(req.session.user._id)
+
+  }
   productHelpers.getAllProducts().then((products)=>{
-    res.render('users/view-products', {products,user} )
+    res.render('users/view-products', {products,user,cartCount} )
   })
  
   
@@ -59,7 +65,10 @@ router.get('/logout',(req,res)=>{
 
 //Checking if loginned in by using a middleware 
 router.get('/cart',verifyLogin,(req,res)=>{
-  res.render('users/cart')
+  userHelpers.getCartItems(req.session.user._id).then((response)=>{
+    res.render('users/cart',{products:response})
+    console.log(response)
+  })
  
 })
 
@@ -72,6 +81,8 @@ router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
     res.redirect('/')
   })
 })
+
+
 
 
 module.exports = router;

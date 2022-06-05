@@ -79,6 +79,41 @@ module.exports={
                 })
             }
         })
+    },
+    getCartItems:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let cartItems = await db.get().collection(collections.CART_COLLECTION).aggregate([
+                
+                {
+                    $match:{user:objectId(userId)}
+                },
+                {
+                    $lookup:{
+                        from:collections.PRODUCT_COLLECTION,
+                        let:{prodList:'$products'},
+                        pipeline:[
+                            {
+                                $match:{
+                                    $expr:{
+                                        $in:['$_id','$$prodList']
+                                    }
+                                }
+                            }
+                        ],
+                        as:'cartItems'
+                    }
+                }
+
+            ]).toArray()
+            resolve(cartItems[0].cartItems)
+        })
+    },
+    getCartCount:(userId)=>{
+       return new Promise((resolve,reject)=>{
+           cart = db.get().collection(collections.CART_COLLECTION).findOne({user:objectId(userId)})
+           cartCount = cart.products.length
+           resolve(cartCount)
+       })
     }
 
 }
